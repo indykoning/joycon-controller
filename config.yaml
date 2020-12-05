@@ -1,0 +1,36 @@
+button_mapping:
+  '2':
+    input: down
+    stick: right
+  '4':
+    input: left
+    stick: right
+  '6':
+    input: right
+    stick: right
+  '8':
+    input: up
+    stick: right
+  a:
+    input: left
+    stick: left
+  backspace:
+    input: b
+  d:
+    input: right
+    stick: left
+  enter:
+    input: a
+  n:
+    input: nfc
+  s:
+    input: down
+    stick: left
+  shift:
+    input: b
+  space:
+    input: a
+  w:
+    input: up
+    stick: left
+
