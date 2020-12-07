@@ -9,7 +9,7 @@ def init_keyboard(switch_controller, configuration={}):
     button_last_state = {}
 
     async def handle_key_change(keyboard_event):
-        mapped_button = configuration.get("button_mapping", {}).get(keyboard_event.name)
+        mapped_button = configuration.get("button_mapping", {}).get('keyboard', {}).get(keyboard_event.name)
 
         # Pass keyboard button if no mapping was found.
         if mapped_button is None:

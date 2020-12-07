@@ -1,5 +1,5 @@
 # Joycon controller
-Have you ever wanted to use your keyboard as a switch controller?
+Have you ever wanted to use your keyboard or any other controller as a switch controller?
 Now you can by using this!
 
 NOTE: This package is simply a wrapper around https://github.com/mart1nro/joycontrol
@@ -19,13 +19,14 @@ Here you can set up key bindings and set the "reconnect_bt_addr"
 Explanation of the mapping
 ```yaml
 button_mapping:
-  backspace: # Backspace keyboard button
-    input: b # The joycon button "B"
-  n: # "n" keyboard button
-    input: nfc # Reload the NFC file in the nfc folder
-  w: # "w" keyboard button
-    input: up # Input on a joystick
-    stick: left # The side of the joystick
+  keyboard:
+    backspace: # Backspace keyboard button
+      input: b # The joycon button "B"
+    n: # "n" keyboard button
+      input: nfc # Reload the NFC file in the nfc folder
+    w: # "w" keyboard button
+      input: up # Input on a joystick
+      stick: left # The side of the joystick
 reconnect_bt_addr: 00:00:00:00:00:00 # The MAC adress of the switch, after initial connection this allows it to connect automatically
 
 ```

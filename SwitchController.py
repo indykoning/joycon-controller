@@ -57,27 +57,42 @@ class SwitchController:
 
     async def stick(self, side, direction=None, release=False):
         """Handle stick direction, remembering previous pressed. Allowing left+up etc."""
+        if direction in ("left", "right"):
+            if release:
+                await self.stick_h_pct(side)
+            else:
+                await self.stick_h_pct(side, direction == "right")
+        if direction in ("up", "down"):
+            if release:
+                await self.stick_v_pct(side)
+            else:
+                await self.stick_v_pct(side, direction == "up")
+
+    async def map_pct_to_stick(self, pct, center, left, right):
+        """Convert percentage to stick position"""
+        return int((center - left) + (pct * (left + right)))
+
+    async def stick_h_pct(self, side, pct=0.5):
+        """Convert percentage value to horizontal switch input"""
         stick = (
             self.controller_state.r_stick_state
             if side == "right"
             else self.controller_state.l_stick_state
         )
         calibration = stick.get_calibration()
+        pos = await self.map_pct_to_stick(pct, calibration.h_center, calibration.h_max_below_center, calibration.h_max_above_center)
+        stick.set_h(pos)
 
-        if direction == "right":
-            stick.set_h(calibration.h_center + calibration.h_max_above_center)
-        if direction == "left":
-            stick.set_h(calibration.h_center - calibration.h_max_below_center)
-
-        if direction == "up":
-            stick.set_v(calibration.v_center + calibration.v_max_above_center)
-        if direction == "down":
-            stick.set_v(calibration.v_center - calibration.v_max_below_center)
-
-        if release and direction in ("left", "right"):
-            stick.set_h(calibration.h_center)
-        if release and direction in ("up", "down"):
-            stick.set_v(calibration.v_center)
+    async def stick_v_pct(self, side, pct=0.5):
+        """Convert percentage value to vertical switch input"""
+        stick = (
+            self.controller_state.r_stick_state
+            if side == "right"
+            else self.controller_state.l_stick_state
+        )
+        calibration = stick.get_calibration()
+        pos = await self.map_pct_to_stick(pct, calibration.v_center, calibration.v_max_below_center, calibration.v_max_above_center)
+        stick.set_v(pos)
 
     async def nfc(self, file_path):
         """Load nfc file from file path"""

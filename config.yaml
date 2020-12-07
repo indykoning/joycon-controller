@@ -1,36 +1,100 @@
 button_mapping:
-  '2':
-    input: down
-    stick: right
-  '4':
-    input: left
-    stick: right
-  '6':
-    input: right
-    stick: right
-  '8':
-    input: up
-    stick: right
-  a:
-    input: left
-    stick: left
-  backspace:
-    input: b
-  d:
-    input: right
-    stick: left
-  enter:
-    input: a
-  n:
-    input: nfc
-  s:
-    input: down
-    stick: left
-  shift:
-    input: b
-  space:
-    input: a
-  w:
-    input: up
-    stick: left
+  controller:
+    ABS_RZ:
+      input: ''
+    ABS_Z:
+      input: ''
 
+    ABS_X:
+      input: h
+      stick: left
+    ABS_Y:
+      input: v
+      stick: left
+    BTN_THUMBL:
+      input: l-stick
+
+    ABS_RX:
+      input: h
+      stick: right
+    ABS_RY:
+      input: v
+      stick: right
+    BTN_THUMBR:
+      input: r_stick
+
+    BTN_DPAD_DOWN:
+      input: down
+    BTN_DPAD_LEFT:
+      input: left
+    BTN_DPAD_RIGHT:
+      input: right
+    BTN_DPAD_UP:
+      input: up
+
+    BTN_NORTH:
+      input: y
+    BTN_EAST:
+      input: b
+    BTN_SOUTH:
+      input: a
+    BTN_WEST:
+      input: x
+
+    BTN_MODE:
+      input: home
+    BTN_START:
+      input: plus
+    BTN_SELECT:
+      input: minus
+
+    BTN_TL:
+      input: l
+    BTN_TL2:
+      input: zl
+    BTN_TR:
+      input: r
+    BTN_TR2:
+      input: zr
+
+  keyboard:
+    '2':
+      input: down
+      stick: right
+    '4':
+      input: left
+      stick: right
+    '6':
+      input: right
+      stick: right
+    '8':
+      input: up
+      stick: right
+
+    e:
+      input: y
+    n:
+      input: nfc
+
+    backspace:
+      input: b
+    enter:
+      input: a
+    shift:
+      input: b
+    space:
+      input: x
+
+    w:
+      input: up
+      stick: left
+    a:
+      input: left
+      stick: left
+    s:
+      input: down
+      stick: left
+    d:
+      input: right
+      stick: left
+reconnect_bt_addr:
