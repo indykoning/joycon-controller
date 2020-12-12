@@ -2,8 +2,7 @@
 import asyncio
 
 import Configuration
-import KeyboardControl
-import GamepadControl
+from input import KeyboardControl, GamepadControl, ReplayControl
 from SwitchController import SwitchController
 
 configuration = Configuration.get()
@@ -16,6 +15,7 @@ def main():
     loop.run_until_complete(switch_controller.load_nfc())
     KeyboardControl.init_keyboard(switch_controller, configuration)
     GamepadControl.init_gamepad(switch_controller, configuration)
+    ReplayControl.init_replay(switch_controller)
 
 main()
 # Configuration.save(configuration)

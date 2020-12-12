@@ -14,6 +14,10 @@ from joycontrol import logging_default as log
 
 
 class SwitchController:
+    def __init__(self):
+        self.handlers = []
+        Handlers(self);
+
     async def create(self, configuration={}):
         """Initialize connection to the switch"""
         log.configure(logging.INFO)
@@ -108,3 +112,64 @@ class SwitchController:
             await self.nfc(filepath)
             print("Loaded in nfc from %s" % filepath)
             break
+
+    def register_handler(self, handle, should_handle):
+        if callable(handle) and callable(should_handle):
+            self.handlers.append({'handle': handle, 'should_handle': should_handle})
+
+    async def handle(self, **args):
+        for handler in self.handlers:
+            should_handle = handler.get('should_handle')
+            handle = handler.get('handle')
+
+            if should_handle is not None and handle is not None and await should_handle(**args):
+                await handle(**args)
+
+def ensure_list(item):
+    if type(item) is not list:
+        return [item]
+    return item
+
+class Handlers:
+    def __init__(self, switch_controller):
+        self.switch_controller = switch_controller
+        switch_controller.register_handler(self.stick, self.should_stick)
+        switch_controller.register_handler(self.nfc, self.should_nfc)
+        switch_controller.register_handler(self.hold, self.should_hold)
+        switch_controller.register_handler(self.release, self.should_release)
+
+    async def is_contoller_button(self, **args):
+        return args.get('buttons') and self.switch_controller.is_valid_button(*ensure_list(args.get('buttons')))
+
+    async def hold(self, **args):
+        await self.switch_controller.hold(*ensure_list(args.get('buttons')))
+
+    async def should_hold(self, **args):
+        return await self.is_contoller_button(**args) and args.get('release') is False
+
+    async def release(self, **args):
+        await self.switch_controller.release(*ensure_list(args.get('buttons')))
+
+    async def should_release(self, **args):
+        return await self.is_contoller_button(**args) and args.get('release') is True
+
+    async def stick(self, **args):
+        if args.get('direction'):
+            await self.switch_controller.stick(args.get('side'), args.get('direction'), args.get('release'))
+
+        if args.get('invert'):
+            args['pct'] = 1-args.get('pct')
+
+        if args.get('angle') in ('h', 'horizontal'):
+            await self.switch_controller.stick_h_pct(args.get('side'), args.get('pct'))
+        elif args.get('angle') in ('v', 'vertical'):
+            await self.switch_controller.stick_v_pct(args.get('side'), args.get('pct'))
+
+    async def should_stick(self, **args):
+        return args.get('side') and (args.get('direction') or args.get('angle'))
+
+    async def nfc(self, **args):
+        await self.switch_controller.load_nfc()
+
+    async def should_nfc(self, **args):
+        return not args.get('release') and args.get('buttons') in ('nfc', 'amiibo')
