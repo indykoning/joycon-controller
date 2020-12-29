@@ -107,11 +107,16 @@ class SwitchController:
 
     async def load_nfc(self):
         """Load first nfc file in nfc folder"""
-        for file in glob.glob("nfc/*.bin"):
+        files=glob.glob("nfc/*.bin")
+        if len(files) == 0:
+            self.controller_state.set_nfc(None)
+            print("Removed NFC from controller")
+        for file in files:
             filepath = os.path.join(os.getcwd(), file)
             await self.nfc(filepath)
-            print("Loaded in nfc from %s" % filepath)
+            print("Loaded in NFC from %s" % filepath)
             break
+
 
     def register_handler(self, handle, should_handle):
         if callable(handle) and callable(should_handle):
@@ -145,13 +150,13 @@ class Handlers:
         await self.switch_controller.hold(*ensure_list(args.get('buttons')))
 
     async def should_hold(self, **args):
-        return await self.is_contoller_button(**args) and args.get('release') is False
+        return args.get('side') is None and await self.is_contoller_button(**args) and args.get('release') is False
 
     async def release(self, **args):
         await self.switch_controller.release(*ensure_list(args.get('buttons')))
 
     async def should_release(self, **args):
-        return await self.is_contoller_button(**args) and args.get('release') is True
+        return args.get('side') is None and await self.is_contoller_button(**args) and args.get('release') is True
 
     async def stick(self, **args):
         if args.get('direction'):

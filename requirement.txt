@@ -2,3 +2,4 @@ pyyaml
 asyncio
 keyboard
 inputs
+watchgod

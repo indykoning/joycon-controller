@@ -10,6 +10,7 @@ button_mapping:
       stick: left
     ABS_Y:
       input: v
+      invert: True
       stick: left
     BTN_THUMBL:
       input: l-stick
@@ -19,6 +20,7 @@ button_mapping:
       stick: right
     ABS_RY:
       input: v
+      invert: True
       stick: right
     BTN_THUMBR:
       input: r_stick
